@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!-- product detail section -->
+<div class="product-detail-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="product-detail-image">
+                    <img src="{{ product.image.url }}" alt="{{ product.product_name }}">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="product-detail-text">
+                    <h2>{{ product.product_name }}</h2>
+                    <p>{{ product.description }}</p>
+                    <div class="product-detail-price">
+                        <span>${{ product.price }}</span>
+                    </div>
+                    <form id="product-form">
+                        <input type="number" id="product-quantity" value="1" min="1">
+                    </form>
+                    <a href="{% url 'add_cart' product.id %}" id="add-to-cart-btn" class="cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end product detail section -->
+
+<!-- message section -->
+<div id="message-container" class="alert" style="display: none;"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to display messages
+    function showMessage(message, type) {
+        const messageContainer = document.getElementById('message-container');
+        messageContainer.textContent = message;
+        messageContainer.className = `alert alert-${type}`;
+        messageContainer.style.display = 'block';
+        setTimeout(() => {
+            messageContainer.style.display = 'none';
+        }, 3000);
+    }
+
+    // Function to update quantity in the cart
+    function updateQuantityInCart(quantity) {
+        const quantityInput = document.getElementById('product-quantity');
+        quantityInput.value = quantity;
+    }
+
+    // Add event listener to quantity input
+    document.getElementById('product-quantity').addEventListener('change', function () {
+        const quantity = parseInt(this.value);
+        updateQuantityInCart(quantity);
+    });
+
+    // Add event listener to add to cart button
+    document.getElementById('add-to-cart').addEventListener('click', function () {
+        const productId = this.getAttribute('data-product-id');
+        const quantity = parseInt(document.getElementById('product-quantity').value);
+
+        // Example AJAX request to add to cart
+        fetch('/add-to-cart/' + productId + '/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ quantity: quantity })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showMessage('Product added to cart', 'success');
+            } else {
+                showMessage('Failed to add product to cart', 'danger');
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}
