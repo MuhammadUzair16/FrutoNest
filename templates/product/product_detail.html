@@ -17,11 +17,13 @@
                     <h2>{{ product.product_name }}</h2>
                     <p>{{ product.description }}</p>
                     <div class="product-detail-price">
-                        <span>${{ product.price }}</span>
+                        <h5>${{ product.price }}</h5>
                     </div>
+                    <div>
                     <form id="product-form">
                         <input type="number" id="product-quantity" value="1" min="1">
                     </form>
+                    </div>
                     <a href="{% url 'add_cart' product.id %}" id="add-to-cart-btn" class="cart-btn">
                             <i class="fas fa-shopping-cart"></i> Add to Cart
                         </a>

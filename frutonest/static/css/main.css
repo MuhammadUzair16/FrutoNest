@@ -1,4 +1,11 @@
-/*Template Name: Fruitkha - Responsive Bootstrap4 Shop TemplateTemplate URI: Description: Bootstrap template for fruits or any other kind of shopAuthor: Imran HossainAuthor URI: https://imransdesign.com/Version: 1.0*/
+/*
+Template Name: Fruitkha - Responsive Bootstrap4 Shop Template
+Template URI: 
+Description: Bootstrap template for fruits or any other kind of shop
+Author: Imran Hossain
+Author URI: https://imransdesign.com/
+Version: 1.0
+*/
 /* -----------------------------------------------------------------------------
 
 # Base - Genral & Typography
@@ -2747,4 +2754,168 @@ table.order-details tbody td {
   display: table-cell;
   vertical-align: middle;
   width: 100%;
+}
+
+
+/* Custom styles for single article section */
+.single-article-section {
+    margin-top: 50px; /* Adjust top margin */
+    margin-bottom: 50px; /* Adjust bottom margin */
+}
+
+.single-article-text {
+    margin-bottom: 30px;
+}
+
+.blog-meta {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.blog-meta .author {
+    margin-right: 10px;
+    color: #555;
+}
+
+.blog-meta .date {
+    margin-left: 10px;
+    color: #555;
+}
+
+.single-article-text h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.single-article-text p {
+    line-height: 1.8;
+    color: #555;
+}
+
+/* Comments section */
+.comments-section {
+    margin-top: 50px;
+}
+
+.comments-section h3 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.comment {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.comment h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.comment .comment-date {
+    font-size: 14px;
+    color: #888;
+}
+
+.comment p {
+    line-height: 1.6;
+    color: #666;
+}
+
+/* Comment form */
+.comment-form {
+    margin-top: 50px;
+}
+
+.comment-form h3 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.comment-form form .form-group {
+    margin-bottom: 20px;
+}
+
+.comment-form form label {
+    font-weight: bold;
+    color: #555;
+}
+
+.comment-form form button[type="submit"] {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.comment-form form button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker shade of primary color */
+}
+
+/* Sidebar section */
+.sidebar-section {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+}
+
+.sidebar-section h4 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.sidebar-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar-section ul li {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .single-article-text h2 {
+        font-size: 28px;
+    }
+
+    .comment-form form button[type="submit"] {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+/* Custom styles for the contact form */
+.contact-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form .form-group {
+    margin-bottom: 15px;
+}
+
+.contact-form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.contact-form .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
 }

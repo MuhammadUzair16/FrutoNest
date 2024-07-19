@@ -12,5 +12,10 @@ urlpatterns = [
     path('home2/', views.home2, name='home2'),
     path('product/', include('product.urls')),
     path('cart/', include('cart.urls')),
+    path('news/', include('news.urls')),
     path('about/', views.about, name='about'),
+    path('shop/', views.shop, name='shop'),
+    path('contact/', include('contact.urls')),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

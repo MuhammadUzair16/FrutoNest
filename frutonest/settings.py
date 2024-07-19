@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,10 @@ INSTALLED_APPS = [
     'product',
     'accounts',
     'cart',
+    'news',
+    'taggit',
+    'contact',
+
 ]
 
 MIDDLEWARE = [
@@ -81,7 +86,7 @@ AUTH_USER_MODEL = 'accounts.Account'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'frutonestt',
+        'NAME': 'fruttonestt',
         'USER': 'root',
         'PASSWORD': 'root123',
         'HOST': '127.0.0.1',
@@ -137,3 +142,54 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "Frutonest",
+
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": "Library",
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "Frutonest Administration",
+
+    # Logo to use for your site, must be present in static files, used for brand on top left
+    "site_logo": "img/favicon.png",
+
+    "login_logo": "img/ok.png",
+
+    # CSS classes that are applied to the logo above
+    "site_logo_classes": "img-circle",
+
+    # Welcome text on the login screen
+    "welcome_sign": "Welcome to the FrutoNest",
+
+    # Copyright on the footer
+    "copyright": "FrutoNest Ltd",
+
+    "search_model": ["auth.User", "auth.Group"],
+
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "cart"},
+
+        {"app": "accounts"},
+
+        {"app": "news"},
+        {"app": "product"},
+        {"app": "contact"},
+
+
+
+    ],
+}

@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>Read the Details</p>
+                        <h1>{{ article.title }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <div class="single-article-text">
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> Admin</span>
+                                <span class="date"><i class="fas fa-calendar"></i> {{ article.published_date }}</span>
+                            </p>
+                            <h2>{{ article.title }}</h2>
+                            <p>{{ article.content }}</p>
+                        </div>
+
+                        <!-- Display comments -->
+                        <div class="comments-section">
+                            <h3>Comments</h3>
+                            {% if comments %}
+                                {% for comment in comments %}
+                                    <div class="comment">
+                                        <h4>{{ comment.name }} <span class="comment-date">{{ comment.created_date|date:"F d, Y" }}</span></h4>
+                                        <p>{{ comment.body }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No comments yet.</p>
+                            {% endif %}
+
+
+                            <div class="comment-form mt-5">
+        <h3 class="mb-4">Leave a Comment</h3>
+        <form method="post" action="{% url 'comment' %}" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {% for field in comment_form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    <div class="invalid-feedback">
+                        {{ field.errors }}
+                    </div>
+                </div>
+            {% endfor %}
+            <a type="submit" class="boxed-btn black">Submit Comment</a>
+        </form>
+    </div>
+
+
+
+                            <div class="col-lg-4">
+                                 <div class="sidebar-section">
+
+                                    <div class="recent-posts">
+                                         <h4>Recent Posts</h4>
+                                             <ul>
+                                                {% for post in recent_posts %}
+                                                     <li><a href="{% url 'news_detail' post.pk %}">{{ post.title }}</a></li>
+                                                {% endfor %}
+                                             </ul>
+                                     </div>
+
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Logo Carousel Section -->
+    <div class="logo-carousel-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="logo-carousel-inner">
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/1.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/2.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/3.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/4.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/5.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

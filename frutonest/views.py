@@ -17,3 +17,11 @@ def home2(request):
 
 def about(request):
   return render(request, 'about.html')
+
+def shop(request):
+    products = Product.objects.all().filter(is_available=True)
+    context = {
+        'products': products
+    }
+    return render(request, 'shop.html', context)
+
