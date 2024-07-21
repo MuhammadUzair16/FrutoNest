@@ -18,30 +18,34 @@
 	<!-- end breadcrumb section -->
 
 	<!-- latest news -->
-	 <div class="latest-news mt-150 mb-150">
-        <div class="container">
-            <div class="row">
-                {% for article in articles %}
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-latest-news">
-                            <a href="{% url 'news_detail' article.pk %}">
-                                <div class="latest-news-bg news-bg-{{ forloop.counter }}"></div>
-                            </a>
-                            <div class="news-text-box">
-                                <h3><a href="{% url 'news_detail' article.pk %}">{{ article.title }}</a></h3>
-                                <p class="blog-meta">
-                                    <span class="author"><i class="fas fa-user"></i> {{ article.author }}</span>
-                                    <span class="date"><i class="fas fa-calendar"></i> {{ article.date_posted }}</span>
-                                </p>
-                                <p class="excerpt">{{ article.content | slice:":200" }}...</p>
-                                <a href="{% url 'news_detail' article.pk %}" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
-                            </div>
-                        </div>
+	<div class="latest-news mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-news">
+                    <div class="latest-news-bg">
+                        <a href="{% url 'news_detail' article.pk %}">
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid">
+                        </a>
                     </div>
-                {% endfor %}
+                    <div class="news-text-box">
+                        <h3><a href="{% url 'news_detail' article.pk %}">{{ article.title }}</a></h3>
+                        <p class="blog-meta">
+                            <span class="author"><i class="fas fa-user"></i> {{ article.author }}</span>
+                            <span class="date"><i class="fas fa-calendar"></i> {{ article.date_posted }}</span>
+                        </p>
+                        <p class="excerpt">{{ article.content|slice:":200" }}...</p>
+                        <a href="{% url 'news_detail' article.pk %}" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
+</div>
+
+
 	<!-- end latest news -->
 
 	<!-- logo carousel -->
@@ -70,4 +74,23 @@
         </div>
     </div>
 </div>
+<style>
+ .latest-news-bg img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 200px; /* Adjust this value as needed */
+    object-fit: cover; /* Ensures the image covers the area without stretching */
+}
+
+.single-latest-news {
+    margin-bottom: 30px; /* Space between news items */
+}
+
+.news-text-box {
+    padding-top: 10px; /* Space between image and title */
+}
+
+
+</style>
 {% endblock %}

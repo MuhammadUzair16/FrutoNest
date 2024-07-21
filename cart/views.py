@@ -4,6 +4,9 @@ from cart.models import Cart, CartItem
 from product.models import Product
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
+from django.contrib import messages
+
 
 def _cart_id(request):
     cart = request.session.session_key
@@ -56,22 +59,32 @@ def cart(request, total=0, quantity=0, cart_items=None):
     return render(request, 'product/cart.html', context)
 
 
+
+
+
 @csrf_exempt
+
+
+
+
 def update_cart_item_quantity(request):
     if request.method == 'POST':
         item_ids = request.POST.getlist('item_ids[]')
         quantities = request.POST.getlist('quantities[]')
 
-        for item_id, quantity in zip(item_ids, quantities):
-            try:
+        try:
+            for item_id, quantity in zip(item_ids, quantities):
                 cart_item = get_object_or_404(CartItem, id=item_id)
                 cart_item.quantity = quantity
                 cart_item.save()
-            except CartItem.DoesNotExist:
-                return JsonResponse({'status': 'error', 'message': f'Item with id {item_id} not found'})
 
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+            messages.success(request, 'Cart updated successfully.')
+            return JsonResponse({'status': 'success', 'message': 'Cart updated successfully.'})
+        except Exception as e:
+            messages.error(request, 'An error occurred while updating the cart. Please try again later.')
+            return JsonResponse({'status': 'error', 'message': 'An error occurred while updating the cart. Please try again later.'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
 @csrf_exempt
 def remove_cart_item(request):

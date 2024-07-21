@@ -2065,29 +2065,36 @@ a.video-play-btn {
   margin-left: -45px;
 }
 
+
 .abt-bg {
-  background-image: url(../img/abt.jpg);
-  height: 100%;
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
+    position: relative;
+    background-image: url('https://img.youtube.com/vi/Cmm-itIRPU8/hqdefault.jpg');
+    background-size: cover; /* Ensures the background covers the entire area */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Ensures the background doesn't repeat */
+    height: 400px; /* Adjust height as needed */
 }
 
 .abt-bg:after {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  content: "";
-  background-color: #051922;
-  opacity: 0.3;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-color: #051922;
+    opacity: 0.3; /* Adjust the opacity to change the darkness */
 }
+
+.abt-bg .video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px; /* Adjust size as needed */
+    color: #fff; /* Adjust color as needed */
+}
+
 
 .abt-section .abt-text {
   padding: 50px;

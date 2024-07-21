@@ -14,6 +14,7 @@ class Tag(models.Model):
 class NewsArticle(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='news_images/', blank=True, null=True)
     published_date = models.DateField()
     content = models.TextField()
     tags = TaggableManager()

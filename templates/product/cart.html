@@ -4,6 +4,42 @@
 {% load custom_filters %}
 
 {% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+  .messages {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    z-index: 1050;
+  }
+
+  .alert {
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+  }
+
+  .alert-dismissible .close {
+    padding: 0;
+    margin: 0;
+    background: transparent;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
+</style>
 
 <!-- breadcrumb-section -->
 <div class="breadcrumb-section breadcrumb-bg">
@@ -21,8 +57,21 @@
 <!-- end breadcrumb section -->
 
 <!-- cart -->
-<div class="cart-section mt-150 mb-150">
-    <div class="container">
+<div class="container mt-150 mb-150">
+    <div class="messages">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="cart-section">
         <div class="row">
             <div class="col-lg-8 col-md-12">
                 <div class="cart-table-wrap">
@@ -37,15 +86,15 @@
                                 <th class="product-total">Sub Total</th>
                             </tr>
                         </thead>
-                        <tbody>
+                    <tbody>
                         {% for cart_item in cart_items %}
                             <tr class="table-body-row" data-item-id="{{ cart_item.id }}">
                                 <td class="product-remove"><a href="#" class="remove-item"><i class="far fa-window-close"></i></a></td>
                                 <td class="product-image"><img src="{{ cart_item.product.image.url }}" alt=""></td>
-                                <td class="product-name">{{ cart_item.product.name }}</td>
+                                <td class="product-name">{{ cart_item.product.product_name }}</td>
                                 <td class="product-price">${{ cart_item.product.price }}</td>
                                 <td class="product-quantity"><input type="number" value="{{ cart_item.quantity }}" min="1" data-item-id="{{ cart_item.id }}"></td>
-                                <td class="product-total">${{ cart_item.product.price|multiply:cart_item.quantity }}</td>
+                                <td class="product-total">${{ cart_item.price|floatformat:2 }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -65,20 +114,20 @@
                         <tbody>
                             <tr class="total-data">
                                 <td><strong>Subtotal:</strong></td>
-                                <td id="overall-total">${{ total }}</td>
+                                <td id="overall-total">${{ total|floatformat:2 }}</td>
                             </tr>
                             <tr class="total-data">
-                                <td><strong>Shipping: </strong></td>
-                                <td>${{ shipping }}</td>
+                                <td><strong>Shipping:</strong></td>
+                                <td>${{ shipping|floatformat:2 }}</td>
                             </tr>
                             <tr class="total-data">
-                                <td><strong>Total: </strong></td>
-                                <td>${{ grand_total }}</td>
+                                <td><strong>Total:</strong></td>
+                                <td>${{ grand_total|floatformat:2 }}</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="cart-buttons">
-                        <a id="update-cart-btn" class="boxed-btn black">Update Cart</a>
+                        <a id="update-cart-btn" class="boxed-btn black" href="#">Update Cart</a>
                         <a href="{% url 'checkout' %}" class="boxed-btn black">Check Out</a>
                     </div>
                 </div>
@@ -124,14 +173,14 @@
         </div>
     </div>
 </div>
-<!-- end logo carousel -->
 
+<!-- JavaScript includes -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Object to store the updated quantities
     let updatedQuantities = {};
 
-    // Function to update the total price for a given row
     function updateRowTotal(row) {
         const priceElement = row.querySelector('.product-price');
         const quantityInput = row.querySelector('.product-quantity input');
@@ -144,14 +193,11 @@ document.addEventListener('DOMContentLoaded', function () {
         totalElement.textContent = `$${total.toFixed(2)}`;
     }
 
-    // Function to update the overall total price and quantity
     function updateOverallTotal() {
         let overallTotal = 0;
 
         document.querySelectorAll('.table-body-row').forEach(row => {
             const totalElement = row.querySelector('.product-total');
-            const quantityInput = row.querySelector('.product-quantity input');
-
             const total = parseFloat(totalElement.textContent.replace('$', ''));
             overallTotal += total;
         });
@@ -159,14 +205,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('overall-total').textContent = `$${overallTotal.toFixed(2)}`;
     }
 
-    // Add event listeners to quantity inputs
     document.querySelectorAll('.product-quantity input').forEach(input => {
         input.addEventListener('change', function () {
             const row = this.closest('.table-body-row');
             const itemId = this.getAttribute('data-item-id');
             const quantity = this.value;
 
-            // Store the updated quantity
             updatedQuantities[itemId] = quantity;
 
             updateRowTotal(row);
@@ -174,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Function to send AJAX request to update cart item quantities
     function updateCartItemsQuantities() {
         const formData = new URLSearchParams();
         for (const [itemId, quantity] of Object.entries(updatedQuantities)) {
@@ -193,15 +236,28 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                console.log('Cart updated successfully');
+                showAlert('success', data.message);
                 updatedQuantities = {}; // Clear the updated quantities after successful update
             } else {
-                console.error('Failed to update cart:', data.message);
+                showAlert('danger', data.message);
             }
-        });
+        })
+        .catch(error => console.error('Error:', error));
     }
 
-    // Function to send AJAX request to remove cart item
+    function showAlert(type, message) {
+        const messagesContainer = document.querySelector('.messages');
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.role = 'alert';
+        alert.innerHTML = `${message} <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+
+        messagesContainer.appendChild(alert);
+        setTimeout(() => {
+            $(alert).fadeOut('slow', () => alert.remove());
+        }, 2000); // Adjust timing as needed
+    }
+
     function removeCartItem(itemId, row) {
         fetch("{% url 'remove_cart_item' %}", {
             method: 'POST',
@@ -216,16 +272,14 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                console.log('Item removed successfully');
-                row.remove(); // Remove the row from the DOM
-                updateOverallTotal(); // Update the overall total
+                row.remove();
+                updateOverallTotal();
             } else {
                 console.error('Failed to remove item:', data.message);
             }
         });
     }
 
-    // Add event listener to the remove item buttons
     document.querySelectorAll('.remove-item').forEach(button => {
         button.addEventListener('click', function (event) {
             event.preventDefault();
@@ -235,13 +289,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Add event listener to the update cart button
     document.getElementById('update-cart-btn').addEventListener('click', function () {
         updateCartItemsQuantities();
     });
 
-    // Initialize the overall total and quantity
     updateOverallTotal();
 });
 </script>
+
 {% endblock %}

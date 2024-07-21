@@ -13,9 +13,12 @@ urlpatterns = [
     path('product/', include('product.urls')),
     path('cart/', include('cart.urls')),
     path('news/', include('news.urls')),
-    path('about/', views.about, name='about'),
+    path('about/', include('about.urls')),
     path('shop/', views.shop, name='shop'),
     path('contact/', include('contact.urls')),
+    path('promotions/', include('promotions.urls')),
+    path('404/', views.page_not_found, name='page_not_found'),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
